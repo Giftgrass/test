@@ -16,10 +16,10 @@ jobs:
 
       - name: Push to multiple repos (as in your original workflow)
         run: |
-          git remote add client1 https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Giftgrass/test1-repo.git
+          git remote add client1 https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Giftgrass/test1.git
           git push client1 main --force
 
-          git remote add client2 https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Giftgrass/test2-repo.git
+          git remote add client2 https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Giftgrass/test2.git
           git push client2 main --force
 
           
