@@ -1,49 +1,37 @@
-name: multipleRepoUpdate
+name: Sync Repositories
 
 on:
-  workflow_run:
-    workflows: ["laravel"] 
-    types:
-      - completed
+  push:
+    branches:
+      - main
 
 jobs:
-  job2:
+  sync:
+    name: Sync Repositories
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout Source Repository
+      uses: actions/checkout@v3
 
-      - name: Set up SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
+    - name: Set up SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.PAT_TOKEN }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-      - name: Debug Info
-        run: |
-          echo "Current directory:"
-          pwd
-          echo "Repository contents:"
-          ls -la
-          echo "Git status:"
-          git status
-          echo "Git remote:"
-          git remote -v
+    - name: Set up Git
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
 
-      - name: Push to test1 and test2
-        run: |
-          echo "Adding remote..."
-          git remote add test1 git@github.com:Giftgrass/test1.git
-          echo "Remote added, checking remotes..."
-          git remote -v
-          echo "Attempting push..."
-          git push test1 main --force
-          echo "Adding remote..."
-          git remote add test2 git@github.com:Giftgrass/test2.git
-          echo "Remote added, checking remotes..."
-          git remote -v
-          echo "Attempting push..."
-          git push test2 main --force
-        env:
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+    - name: Sync with Repo2
+      run: |
+        git remote add test2 git@github.com:Giftgrass/test2.git
+        git push -f test2 main
+
+    - name: Sync with Repo3
+      run: |
+        git remote add test1 git@github.com:Giftgrass/test1.git
+        git push -f test1 main
