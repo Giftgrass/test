@@ -24,8 +24,14 @@ jobs:
           echo "Git remote:"
           git remote -v
 
-      - name: Push to test2
+      - name: Push to test1 and test2
         run: |
+          echo "Adding remote..."
+          git remote add test1 git@github.com:Giftgrass/test1.git
+          echo "Remote added, checking remotes..."
+          git remote -v
+          echo "Attempting push..."
+          git push test1 main --force
           echo "Adding remote..."
           git remote add test2 git@github.com:Giftgrass/test2.git
           echo "Remote added, checking remotes..."
