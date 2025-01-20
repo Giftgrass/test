@@ -3,7 +3,7 @@ name: Sync Repositories
 on:
   push:
     branches:
-      - main # Trigger the workflow when changes are pushed to the main branch
+      - main
 
 jobs:
   sync:
@@ -16,9 +16,6 @@ jobs:
     - name: Sync repositories
       uses: somosprte/sync-repositories@0.0.1-ALPHA
       with:
-        # Comma-separated list of target repositories to sync
-        distination: Giftgrass/test1,Giftgrass/test2
-        # Your GitHub username
+        distination: https://github.com/Giftgrass/test2,https://github.com/Giftgrass/test3
         username: Giftgrass
-        # The name of the GitHub secret that stores your PAT
-        token_secret: PAT_TOKEN
+        token_secret: ${{ secrets.PAT_TOKEN }}
