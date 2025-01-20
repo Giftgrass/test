@@ -20,4 +20,8 @@ jobs:
           git remote add test2 https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/Giftgrass/test2.git
           git push test2 main --force
 
+      
+      env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+
          
