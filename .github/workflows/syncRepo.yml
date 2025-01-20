@@ -3,19 +3,27 @@ name: Sync Repositories
 on:
   push:
     branches:
-      - main
+      - main # Trigger when pushing to the main branch
 
 jobs:
   sync:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Source Repository
+    - name: Checkout the source repository
       uses: actions/checkout@v3
 
-    - name: Sync repositories
-      uses: somosprte/sync-repositories@0.0.1-ALPHA
-      with:
-        distination: https://github.com/Giftgrass/test2,https://github.com/Giftgrass/test1
-        username: Giftgrass
-        token_secret: ${{ secrets.PAT_TOKEN }}
+    - name: Set up Git
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+
+    - name: Add and push to Test2 via HTTPS (with PAT)
+      run: |
+        git remote add test2 https://github.com/Giftgrass/test2.git
+        git push https://$GITHUB_ACTOR:${{ secrets.PAT_TOKEN }}@github.com/Giftgrass/test2.git main --force
+
+    - name: Add and push to Test1 via HTTPS (with PAT)
+      run: |
+        git remote add test1 https://github.com/Giftgrass/test1.git
+        git push https://$GITHUB_ACTOR:${{ secrets.PAT_TOKEN }}@github.com/Giftgrass/test1.git main --force
