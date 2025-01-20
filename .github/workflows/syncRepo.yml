@@ -1,4 +1,4 @@
-name: Sync Repositories
+name: somosprt Sync Repositories
 
 on:
   push:
@@ -18,4 +18,4 @@ jobs:
       with:
         distination: https://github.com/Giftgrass/test2,https://github.com/Giftgrass/test1
         username: Giftgrass
-        token_secret: ${{ secrets.PAT_TOKEN }}
+        token_secret: ${{secrets.PAT_TOKEN}}
