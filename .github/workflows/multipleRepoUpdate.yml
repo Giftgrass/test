@@ -2,23 +2,24 @@ name: multipleRepoUpdate
 
 on:
   workflow_run:
-    workflows: ["laravel"] 
+    workflows: ["laravel"]
     types:
       - completed
 
 jobs:
   job2:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Push to test1 and test2
+      - name: Push to multiple repos
         run: |
-          git remote add test1 https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/Giftgrass/test1.git && git push test1 main --force
-          
-          git remote add test2 https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/Giftgrass/test2.git && git push test2 main --force
+          git remote add test1 https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/Giftgrass/test1.git
+          git push test1 main --force
+
+          git remote add test2 https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/Giftgrass/test2.git
+          git push test2 main --force
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
-
-         
