@@ -16,6 +16,6 @@ jobs:
     - name: Sync repositories
       uses: somosprte/sync-repositories@0.0.1-ALPHA
       with:
-        distination: https://github.com/Giftgrass/test2,https://github.com/Giftgrass/test3
+        distination: https://github.com/Giftgrass/test2,https://github.com/Giftgrass/test1
         username: Giftgrass
         token_secret: ${{ secrets.PAT_TOKEN }}
