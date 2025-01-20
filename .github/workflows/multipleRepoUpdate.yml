@@ -29,12 +29,12 @@ jobs:
     - name: Debug SSH
       run: ssh -vT git@github.com
 
-    - name: Sync with Repo2
+    - name: Sync with Repo/test2
       run: |
         git remote add test2 git@github.com:Giftgrass/test2.git
         git push -f test2 main
 
-    - name: Sync with Repo3
+    - name: Sync with Repo/test3
       run: |
         git remote add test1 git@github.com:Giftgrass/test1.git
         git push -f test1 main
