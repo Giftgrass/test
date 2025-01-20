@@ -1,4 +1,4 @@
-name: Sync Repositories
+name: somosprt Sync Repositories
 
 on:
   push:
