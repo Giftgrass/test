@@ -27,7 +27,7 @@ jobs:
       - name: Push to test2
         run: |
           echo "Adding remote..."
-          git remote add test2 https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/Giftgrass/test2.git
+          git remote set-url test2 git@github.com:Giftgrass/test2.git
           echo "Remote added, checking remotes..."
           git remote -v
           echo "Attempting push..."
