@@ -22,12 +22,12 @@ jobs:
     
       - name: Add remote for Test1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Secure token handling
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}  # Secure token handling
         run: |
-          git remote add test1 https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Giftgrass/test1.git
+          git remote add test1 https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/Giftgrass/test1.git
           git push test1 main --force
 
       - name: Add remote for Test2
         run: |
-          git remote add test2 https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Giftgrass/test2.git
+          git remote add test2 https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/Giftgrass/test2.git
           git push test2 main --force
