@@ -1,0 +1,31 @@
+name: Mirror Changes to Test1 and Test2
+
+on:
+    workflow_run:
+      workflows:
+        - Laravel 
+      types:
+        - completed
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source repo
+        uses: actions/checkout@v3
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Add remote for Test1
+        run: |
+          git remote add test1 https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/Giftgrass/test1.git
+          git push --mirror test1
+
+      - name: Add remote for Test2
+        run: |
+          git remote add test2 https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/Giftgrass/test2.git
+          git push --mirror test2
