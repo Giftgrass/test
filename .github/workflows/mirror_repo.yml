@@ -1,4 +1,4 @@
-name: Mirror Changes to Test1 and Test2
+name: Mirror Changes to Test2
 
 on:
     workflow_run:
