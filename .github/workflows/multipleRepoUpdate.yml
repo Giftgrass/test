@@ -1,41 +1,33 @@
-name: Sync Repositories v1
+name: Mirror Changes to Test1 and Test2
 
 on:
-  push:
+  push: # Trigger the workflow on push to the main branch
     branches:
       - main
 
 jobs:
-  sync:
-    name: Sync Repositories
+  mirror:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Source Repository
-      uses: actions/checkout@v3
+      # Step 1: Checkout the source repository (test)
+      - name: Checkout source repo
+        uses: actions/checkout@v3
 
-    - name: Set up SSH
-      run: |
-        mkdir -p ~/.ssh
-        chmod 700 ~/.ssh/
-        echo "${{ secrets.PAT_TOKEN }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan github.com >> ~/.ssh/known_hosts
+      # Step 2: Set up Git
+      - name: Set up Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
 
-    - name: Set up Git
-      run: |
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
-    
-    - name: Debug SSH
-      run: ssh -vT git@github.com
+      # Step 3: Mirror to Test1
+      - name: Push changes to Test1
+        run: |
+          git remote add test1 https://x-access-token:${{ secrets.MIRROR_REPO_PAT }}@github.com/Giftgrass/test1.git
+          git push --mirror test1
 
-    - name: Sync with Repo/test2
-      run: |
-        git remote add test2 git@github.com:Giftgrass/test2.git
-        git push -f test2 main
-
-    - name: Sync with Repo/test3
-      run: |
-        git remote add test1 git@github.com:Giftgrass/test1.git
-        git push -f test1 main
+      # Step 4: Mirror to Test2
+      - name: Push changes to Test2
+        run: |
+          git remote add test2 https://x-access-token:${{ secrets.MIRROR_REPO_PAT }}@github.com/Giftgrass/test2.git
+          git push --mirror test2
