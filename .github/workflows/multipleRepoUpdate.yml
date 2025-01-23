@@ -23,11 +23,11 @@ jobs:
       # Step 3: Mirror to Test1
       - name: Push changes to Test1
         run: |
-          git remote add test1 https://x-access-token:${{ secrets.MIRROR_REPO_PAT }}@github.com/Giftgrass/test1.git
+          git remote add test1 https://x-access-token:${{ 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 }}@github.com/Giftgrass/test1.git
           git push --mirror test1
 
       # Step 4: Mirror to Test2
       - name: Push changes to Test2
         run: |
-          git remote add test2 https://x-access-token:${{ secrets.MIRROR_REPO_PAT }}@github.com/Giftgrass/test2.git
+          git remote add test2 https://x-access-token:${{ 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 }}@github.com/Giftgrass/test2.git
           git push --mirror test2
