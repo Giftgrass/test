@@ -20,6 +20,6 @@ jobs:
         with:
           source_repo: ${{ github.repository }} # This is the 'test' repo (source)
           source_branch: main # Sync from the main branch
-          target_repo: Giftgrass/test1 # Replace with the full name of the target repo
+          target_repo: Giftgrass/test2.git # Replace with the full name of the target repo
           target_branch: main # Sync to the main branch of test1
           github_token: ${{ secrets.PAT_TOKEN}} # Use your Personal Access Token
