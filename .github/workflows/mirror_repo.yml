@@ -1,33 +1,25 @@
-name: Mirror Changes to Test2
+name: Sync to test1
 
 on:
-  workflow_run:
-    workflows:
-      - Laravel
-    types:
-      - completed
+  push:
+    branches:
+      - main # Trigger the workflow when changes are pushed to the main branch
 
 jobs:
-  mirror:
+  repo-sync:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source repo
-        uses: actions/checkout@v3
+      - name: Checkout source repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT_TOKEN }} # Use your Personal Access Token (PAT)
 
-      - name: Set up Git
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-    
-      - name: Add remote Test1
-        env:
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}  # Secure token handling
-        run: |
-          git remote add test1 https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/Giftgrass/test1.git
-          git push test1 main --force
-
-      - name: Add remote for Test2
-        run: |
-          git remote add test2 https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/Giftgrass/test2.git
-          git push test2 main --force
+      - name: Sync with target repository
+        uses: repo-sync/github-sync@v2
+        with:
+          source_repo: ${{ github.repository }} # This is the 'test' repo (source)
+          source_branch: main # Sync from the main branch
+          target_repo: Giftgrass/test1 # Replace with the full name of the target repo
+          target_branch: main # Sync to the main branch of test1
+          github_token: ${{ secrets.PAT_TOKEN}} # Use your Personal Access Token
