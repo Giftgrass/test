@@ -28,6 +28,7 @@ jobs:
     strategy:
       matrix:
         client: [
+          { name: 'test1', url: 'github.com/Giftgrass/test1.git' },
           { name: 'test2', url: 'github.com/Giftgrass/test2.git' }
         ]
 
