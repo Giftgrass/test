@@ -1,1 +1,1 @@
-are we syncing
+We are we syncing right?
