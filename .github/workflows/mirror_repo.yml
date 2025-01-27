@@ -106,7 +106,7 @@ jobs:
         env:
             GH_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
-              gh repo clone Grasshopper-Green-Technologies/lhcl-portal client-repo
+              gh repo clone Giftgrass/test2 client-repo
               git remote add source "https://github.com/${{ github.repository }}.git"
               git pull source main
               git push origin main
