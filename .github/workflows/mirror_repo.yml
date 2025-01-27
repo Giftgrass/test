@@ -68,5 +68,5 @@ jobs:
           GH_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           cd client-repo
-          git remote set-url origin "https://$GH_TOKEN@${{ matrix.client.url }}"
+          git remote set-url origin "https://$GH_TOKEN@github.com/${{ matrix.client.url }}.git"
           git push origin main --force
