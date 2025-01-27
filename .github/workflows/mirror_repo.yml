@@ -43,7 +43,7 @@ jobs:
       - name: Debug current directory
         run: pwd
 
-      - name: Clone client repository
+      - name: Clone client repository 1
         env:
           GH_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
