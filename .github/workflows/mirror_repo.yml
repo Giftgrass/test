@@ -1,28 +1,112 @@
-name: Sync to test2
+
+name: Laravel Setup, Test, Update, and Deploy
 
 on:
   push:
     branches:
-      - main # Trigger the workflow when changes are pushed to the main branch
+      - main
 
 jobs:
-  repo-sync:
+  setup:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source repository
-        uses: actions/checkout@v4
+      - name: Checkout current repository
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
         with:
-          repository: Giftgrass/test # Source repository
-          token: ${{ secrets.PAT_TOKEN }} # Use your Personal Access Token (PAT)
+          php-version: '7.4'
 
-      - name: Add target repository as remote
-        run: |
-          git remote add target https://github.com/Giftgrass/test2.git
-          git fetch target
+      - name: Install dependencies
+        run: composer install
 
-      - name: Reset target repository to match source repository
+      - name: Set up Laravel environment
         run: |
-          git push --force target main:main
+          cp .env.example .env
+          php artisan key:generate
+
+  test:
+    runs-on: ubuntu-latest
+    needs: setup
+
+    services:
+      mysql:
+        image: mysql:5.7
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }} # Use your Personal Access Token
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: homestead
+          MYSQL_USER: homestead
+          MYSQL_PASSWORD: secret
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+
+      - name: Install dependencies
+        run: composer install
+
+      - name: Set up Laravel environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Set environment variables and Database
+        run: |
+          echo "DB_CONNECTION=mysql" >> .env
+          echo "DB_HOST=127.0.0.1" >> .env
+          echo "DB_PORT=3306" >> .env
+          echo "DB_DATABASE=homestead" >> .env
+          echo "DB_USERNAME=homestead" >> .env
+          echo "DB_PASSWORD=secret" >> .env
+
+  update-and-deploy:
+    runs-on: ubuntu-latest
+    needs: test
+
+    strategy:
+      matrix:
+        client: [
+          { name: 'test2', url: 'github.com/Giftgrass/test2.git' }
+#          { name: 'ENKOSIBAWO', url: 'github.com/Grasshopper-Green-Technologies/enkosibawo-portal.git' },
+#          { name: 'ISIDINGO PROJECTS', url: 'github.com/Grasshopper-Green-Technologies/isidingo-portal.git' },
+#          { name: 'Likhonalethu', url: 'github.com/Grasshopper-Green-Technologies/likhonalethu-portal.git' },
+#          { name: 'RCWBA TRADING', url: 'github.com/Grasshopper-Green-Technologies/rcwba-portal.git' },
+#          { name: 'SAKHULU PROJECTS', url: 'github.com/Grasshopper-Green-Technologies/sakhulu-portal.git' },
+#          { name: 'MILANOSI', url: 'github.com/Grasshopper-Green-Technologies/milanosi-portal.git' },
+#          { name: 'PHOLA AND LUGIE', url: 'github.com/Grasshopper-Green-Technologies/phola-lugie-portal.git' },
+#          { name: 'FATYELA', url: 'github.com/Grasshopper-Green-Technologies/fatyela-portal.git' },
+#          { name: 'ISIZWE SETHU AND SONS GENERAL', url: 'github.com/Grasshopper-Green-Technologies/isizwe-portal.git' },
+
+        ]
+
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+
+      - name: Update and Deploy
+        env:
+            GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+              gh repo clone Grasshopper-Green-Technologies/lhcl-portal client-repo
+              git remote add source "https://github.com/${{ github.repository }}.git"
+              git pull source main
+              git push origin main
