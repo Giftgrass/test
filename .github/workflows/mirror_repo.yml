@@ -60,7 +60,7 @@ jobs:
           cd client-repo
           git remote add source "https://github.com/${{ github.repository }}.git"
           git fetch source
-          git pull --rebase source main
+          git reset --hard source/main
 
       - name: Push changes to client repository
         env:
