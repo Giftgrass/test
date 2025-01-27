@@ -44,11 +44,11 @@ jobs:
       - name: Debug current directory
         run: pwd
 
-      - name: Clone client repository 1
+      - name: Clone client repository
         env:
           GH_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
-          gh repo clone Giftgrass/test2 client-repo
+          gh repo clone ${{ matrix.client.url }} client-repo
 
       - name: Navigate to client repository
         run: |
@@ -68,5 +68,5 @@ jobs:
           GH_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           cd client-repo
-          git remote set-url origin "https://$GH_TOKEN@github.com/Giftgrass/test2.git"
+          git remote set-url origin "https://$GH_TOKEN@${{ matrix.client.url }}"
           git push origin main --force
