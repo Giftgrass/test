@@ -23,6 +23,6 @@ jobs:
 
       - name: Sync changes to target repository
         run: |
-          git push target main:main
+          git push --force target main:main
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }} # Use your Personal Access Token
