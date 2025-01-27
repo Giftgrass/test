@@ -21,7 +21,7 @@ jobs:
           git remote add target https://github.com/Giftgrass/test2.git
           git fetch target
 
-      - name: Sync changes to target repository
+      - name: Reset target repository to match source repository
         run: |
           git push --force target main:main
         env:
