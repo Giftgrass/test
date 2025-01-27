@@ -13,12 +13,16 @@ jobs:
       - name: Checkout source repository
         uses: actions/checkout@v4
         with:
+          repository: Giftgrass/test # Source repository
           token: ${{ secrets.PAT_TOKEN }} # Use your Personal Access Token (PAT)
 
-      - name: Sync with target repository
-        uses: repo-sync/github-sync@v2
-        with:
-          source_repo: Giftgrass/test # Source repository
-          source_branch: main # Sync from the main branch
-          destination_branch: main # Sync to the main branch of the target repo
-          github_token: ${{ secrets.PAT_TOKEN }} # Use your Personal Access Token
+      - name: Add target repository as remote
+        run: |
+          git remote add target https://github.com/Giftgrass/test2.git
+          git fetch target
+
+      - name: Sync changes to target repository
+        run: |
+          git push target main:main
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }} # Use your Personal Access Token
